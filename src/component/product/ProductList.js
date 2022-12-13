@@ -8,7 +8,6 @@ export default React.memo(function ProductList() {
 
   const loadproductList = async () => {
     await getProductList().then((res) => {
-      console.log(res);
       setProductList([...res.data.product]);
     });
   };
