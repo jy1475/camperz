@@ -10,7 +10,7 @@ import LoginEmail from "./pages/Login/LoginEmail";
 import SearchPage from "./pages/Search/SearchPage";
 import ProductUploadPage from "./pages/ProductUpload/ProductUploadPage";
 import ProfileEditPage from "./pages/Profile/ProfileEditPage";
-
+import FollowPage from './pages/follow/FollowPage';
 function App() {
   return (
     <>
@@ -26,6 +26,7 @@ function App() {
           <Route path="/profile/edit" element={<ProfileEditPage />}></Route>
           <Route path="/search" element={<SearchPage />}></Route>
           <Route path="/product" element={<ProductUploadPage />}></Route>
+          <Route path="/profile/:id/follow" element={<FollowPage />}></Route>
         </Routes>
       </BrowserRouter>
     </>

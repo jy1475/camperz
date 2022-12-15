@@ -17,7 +17,10 @@ export default function PostItem({
       <StyledItemBlock>
         <div>아이디{id}</div>
         <div>컨텐츠{content}</div>
-        <div>
+        <div style={{
+          width: "100px",
+          height: "100px",
+        }}>
           이미지
           <Simg src={image} alt="" />
         </div>

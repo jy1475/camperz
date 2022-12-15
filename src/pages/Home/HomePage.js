@@ -25,9 +25,7 @@ export default function HomePage() {
               />
             }
           ></Header>
-          <div>
-            <PostList />
-          </div>
+
           <NavBar />
         </>
       ) : (
