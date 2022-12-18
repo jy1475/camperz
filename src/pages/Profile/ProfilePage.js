@@ -1,67 +1,45 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import useMoals from "../../lib/hooks/useMoals";
+import React from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import Button from '../../component/common/Button';
+import NavBar from '../../component/common/NavBar';
+import Header from '../../component/common/Header';
+import UserProfile from '../../component/user/UserProfile';
+import ProductList from '../../component/product/ProductList';
+import PostList from './../../component/post/PostList';
+import { logout } from '../../lib/utils/logout';
+import { modals } from './../../component/modal/Modals';
+import { useModals } from './../../lib/hooks/useModals';
 
-import Button from "../../component/common/Button";
-import NavBar from "../../component/common/NavBar";
-import UserProfile from "../../component/user/UserProfile";
-import Header from "../../component/common/Header";
-import ProductList from "../../component/product/ProductList";
-import Modal from "../../component/modal/Modal";
-import PostList from "../../component/post/PostList";
-import ModalsProvider from "../../component/modal/ModalsProvider";
 
 export default function ProfilePage() {
-  // const { openModal } = useMoals();
-  const navigate = useNavigate();
-  const [openModal, setOpenModal] = useState(false);
+	const myAccountname = localStorage.getItem('accountname');
+	const { accountname } = useParams();
+	const user = accountname || myAccountname;
+	const type = accountname ? 'other' : 'mine';
 
-  // const handleClick = () => {
-  //   openModal(Modal, { foo: "bar" });
-  // };
+	const { openModal } = useModals();
+	const navigate = useNavigate();
 
-  return (
-    <ModalsProvider>
-      <Header
-        leftChild={
-          <Button onClick={() => navigate(-1)} text={"뒤로가기"} active />
-        }
-        rightChild={
-          <Button
-            onClick={() => {
-              setOpenModal(true);
-            }}
-            text={"모달"}
-            active
-          />
-        }
-      />
-      <div>프로필</div>
-      <UserProfile type="mine" />
-      <div>
-        상품목록
-        <ProductList />
-      </div>
-      <div>포스트입니다.
-        <PostList />
-      </div>
-      <NavBar />
-      {openModal && (
-        <StyledModalBackGround onClick={() => false}>
-          <Modal type="Header" />
-        </StyledModalBackGround>
-      )}
-    </ModalsProvider>
-  );
+	const handleModalClick = () => {
+		openModal(modals.profileModal, {
+			onSetting: () => {},
+			onLogout: () => {
+				logout();
+				navigate('/');
+			},
+		});
+	};
+
+	return (
+		<>
+			<Header rightChild={<Button onClick={handleModalClick} text={'모달'} active />} />
+			<div>프로필</div>
+			<UserProfile type={type} user={user} />
+			<div>상품목록</div>
+			<ProductList user={user} type={type} />
+			<div>포스트목록</div>
+			<PostList user={user} type={type} />
+			<NavBar />
+		</>
+	);
 }
-
-const StyledModalBackGround = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  z-index: 800;
-  background-color: #e3e3d3;
-  background-color: rgba(0, 0, 0, 0.5);
-`;

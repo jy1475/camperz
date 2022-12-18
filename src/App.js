@@ -1,36 +1,35 @@
-import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import HomePage from "./pages/Home/HomePage";
-import LoginPage from "./pages/Login/LoginPage";
-import JoinPage from "./pages/Join/JoinPage";
-import ProfilePage from "./pages/Profile/ProfilePage";
-import PostUploadPage from "./pages/Post/PostUploadPage";
-import LoginEmail from "./pages/Login/LoginEmail";
-import SearchPage from "./pages/Search/SearchPage";
-import ProductUploadPage from "./pages/ProductUpload/ProductUploadPage";
-import ProfileEditPage from "./pages/Profile/ProfileEditPage";
-import FollowPage from './pages/follow/FollowPage';
-function App() {
-  return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />}></Route>
-          <Route path="/login" element={<LoginPage />}></Route>
-          <Route path="/login/email" element={<LoginEmail />}></Route>
-          <Route path="/join" element={<JoinPage />}></Route>
-          <Route path="/post/upload" element={<PostUploadPage />}></Route>
-          <Route path="/profile" element={<ProfilePage />}></Route>
-          <Route path="/profile/:accountname" element={<ProfilePage />}></Route>
-          <Route path="/profile/edit" element={<ProfileEditPage />}></Route>
-          <Route path="/search" element={<SearchPage />}></Route>
-          <Route path="/product" element={<ProductUploadPage />}></Route>
-          <Route path="/profile/:id/follow" element={<FollowPage />}></Route>
-        </Routes>
-      </BrowserRouter>
-    </>
-  );
+import ProfilePage from './pages/Profile/ProfilePage';
+import ProductUploadPage from './pages/Product/ProductUploadPage';
+import ProfileEditPage from './pages/Profile/ProfileEditPage';
+import ProductEditPage from './pages/Product/ProductEditPage';
+import Page404 from './pages/ErrorPage/Page404';
+import PostUploadPage from './pages/post/PostUploadPage';
+import Provider from './component/context/Provider';
+import Modals from './component/modal/Modals';
+import PostList from './component/post/PostList';
+import FollowerPage from './pages/follow/FollowerPage';
+
+export default function App() {
+	return (
+		<>
+			<Provider>
+				<BrowserRouter>
+					<Routes>
+						<Route path="/profile/" element={<ProfilePage />}></Route>
+						<Route path="/profile/:accountname" element={<ProfilePage />}></Route>
+						<Route path="/profile/edit" element={<ProfileEditPage />}></Route>
+						<Route path="/product" element={<ProductUploadPage />}></Route>
+						<Route path="/product/:id/edit" element={<ProductEditPage />}></Route>
+						<Route path="/postUpload" element={<PostUploadPage />}></Route>
+						<Route path="/pageNotFound" element={<Page404 />}></Route>
+						<Route path="/profile/:accountname/follower" element={<FollowerPage />}></Route>
+					</Routes>
+					<Modals />
+				</BrowserRouter>
+			</Provider>
+		</>
+	);
 }
-
-export default App;

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import FollowUserList from "./FollowUserList";
-import FollowUser from "./FollowUser";
+import FollowUser from "../follow/FollowUser";
 
 export default function FollowContents({ followerData, followMessage }) {
     const [userData, setUserData] = useState();

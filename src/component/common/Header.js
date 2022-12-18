@@ -1,12 +1,13 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Button from './Button';
+import BackButton from './BackButton';
 
 export default function Header({ leftChild, rightChild }) {
-  const navigate = useNavigate();
-  return (
-    <div>
-      {leftChild} | {rightChild}
-    </div>
-  );
+	return (
+		<div>
+			{leftChild} | {rightChild}
+		</div>
+	);
 }
+
+Header.defaultProps = {
+	leftChild: <BackButton />,
+};

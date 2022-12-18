@@ -1,25 +1,28 @@
-import client from "./client";
-import axios from "axios";
-import { axiosP, axiosPublic } from "./axios";
-
-const url = "https://mandarin.api.weniv.co.kr";
-const token = localStorage.getItem("token");
-
-export const getMyInfo = async () => {
-  const reqPath = `/user/myinfo`;
-
-  const res = await axios.get(url + reqPath, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return res;
-};
+import { axiosPrivate } from './customAxios';
 
 export const getUserInfo = async (accountname) => {
-  const reqPath = `/profile/${accountname}`;
+	const reqPath = `/profile/${accountname}`;
 
-  const res = await axiosP.get(reqPath);
-  return res;
+	const res = await axiosPrivate.get(reqPath);
+	return res;
+};
+
+export const getMyInfo = async () => {
+	const reqPath = `/user/myinfo`;
+
+	const res = await axiosPrivate.get(reqPath);
+
+	return res;
+};
+
+export const editProfile = async (userInfo) => {
+	const reqPath = `/user`;
+
+	const userData = {
+		user: {
+			...userInfo,
+		},
+	};
+	const res = await axiosPrivate.put(reqPath, userData);
+	return res;
 };

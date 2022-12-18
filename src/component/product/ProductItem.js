@@ -1,64 +1,58 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
-import Modal from "../modal/Modal";
+import { modals } from '../modal/Modals';
+import { removeProduct } from '../../lib/apis/productApis';
+import { useModals } from './../../lib/hooks/useModals';
 
-export default function ProductItem({
-  itemName,
-  price,
-  itemImage,
-  link,
-  id,
-  load,
-}) {
-  const [openModal, setOpenModal] = useState(false);
+export default function ProductItem({ itemName, price, itemImage, link, id, onload, type }) {
+	const navigate = useNavigate();
+	const { openModal } = useModals();
 
-  useEffect(() => console.log(itemImage), []);
+	const handleModalClick = () => {
+		openModal(modals.productModal, {
+			onRemove: () => {
+				openModal(modals.confirmModal, {
+					onRemove: async () => {
+						await removeProduct(id);
+						onload();
+					},
+				});
+			},
+			onEdit: () => {
+				navigate(`/product/${id}/edit`);
+			},
+			onMove: () => {},
+			type,
+		});
+	};
 
-  return (
-    <>
-      <StyledItemBlock
-        onClick={() => {
-          setOpenModal(true);
-        }}
-      >
-        <div>상품명{itemName}</div>
-        <div>가격{price}</div>
-        <div
-          style={{
-            width: "100px",
-            height: "100px",
-          }}
-        >
-          이미지
-          <Simg src={itemImage} alt="" />
-        </div>
-        <div>링크{link}</div>
-      </StyledItemBlock>
-
-      {openModal && (
-        <StyledModalBackGround onClick={() => setOpenModal(false)}>
-          <Modal type="profilePageProduct" load={load} id={id} />
-        </StyledModalBackGround>
-      )}
-    </>
-  );
+	return (
+		<>
+			<StyledItemBlock onClick={handleModalClick}>
+				<div>상품명{itemName}</div>
+				<div>가격{price}</div>
+				<div
+					style={{
+						width: '100px',
+						height: '100px',
+					}}
+				>
+					이미지
+					<Simg src={itemImage} alt="" />
+				</div>
+				<div>링크{link}</div>
+			</StyledItemBlock>
+		</>
+	);
 }
 
 const StyledItemBlock = styled.div`
-  border: 1px solid black;
+	border: 1px solid black;
 `;
 
 const Simg = styled.img`
-  width: 100%;
-  height: 100%;
-`;
-const StyledModalBackGround = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  z-index: 800;
-  background-color: #e3e3d3;
-  background-color: rgba(0, 0, 0, 0.5);
+	width: 100%;
+	height: 100%;
 `;
