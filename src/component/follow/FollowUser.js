@@ -1,81 +1,86 @@
-import React from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { followUser, unfollowUser } from '../../lib/apis/followApis';
-import FollowButton from '../follow/FollowButton';
+import ButtonSmall from '../common/ButtonSmall';
+import defaultProfileImg from '../../assets/icons/basic_profile.png';
 
-export default function FollowUser({
-    username,
-    accountname,
-    intro,
-    image,
-    isFollow,
-}) {
-    const navigate = useNavigate();
-    const [is_Follow, setIsFollowed] = useState(isFollow);
-    let userIntro = intro;
+export default function FollowUser({ username, accountname, intro, image, isfollow }) {
+	const navigate = useNavigate();
+	const [is_Follow, setIsFollowed] = useState(isfollow);
+	let userIntro = intro;
 
-    const handleFollow = async () => {
-        if (is_Follow) {
-            await unfollowUser(accountname).then((res) => {
-                setIsFollowed(false);
-            })
-        } else {
-            await followUser(accountname).then((res) => {
-                setIsFollowed(true);
-            })
-        }
+	const handleFollow = async () => {
+		if (is_Follow) {
+			await unfollowUser(accountname).then((res) => {
+				setIsFollowed(false);
+			});
+		} else {
+			await followUser(accountname).then((res) => {
+				setIsFollowed(true);
+			});
+		}
+	};
 
-    };
-
-    return (
-        <StyledUserContainer id={accountname}>
-            <StyledUserInfoContent onClick={() => {
-                const id = accountname;
-                navigate(`/profile/${id}`);
-            }}>
-                <StyledProfileImg src={image} alt="프로필이미지" />
-                <StyledUserInfo>
-                    <StyledUserName>{username}</StyledUserName>
-                    <StyledUserIntro>{userIntro}</StyledUserIntro>
-                </StyledUserInfo>
-            </StyledUserInfoContent>
-
-            <FollowButton isFollow={is_Follow} onClick={handleFollow} />
-
-        </StyledUserContainer>
-    )
+	const handleErrorImg = (e) => {
+		e.target.src = defaultProfileImg;
+	};
+	return (
+		<S_Li id={accountname}>
+			<S_UserInfoContent
+				onClick={() => {
+					const id = accountname;
+					navigate(`/profile/${id}`);
+				}}
+			>
+				<S_ProfileImg src={image} alt="프로필이미지" onError={handleErrorImg} />
+				<S_UserInfo>
+					<S_UserName>{username}</S_UserName>
+					<S_UserIntro>{userIntro}</S_UserIntro>
+				</S_UserInfo>
+			</S_UserInfoContent>
+			<S_ButtonBox>
+				<ButtonSmall isfollow={is_Follow} onClick={handleFollow} />
+			</S_ButtonBox>
+		</S_Li>
+	);
 }
 
-const StyledUserContainer = styled.div`
-display: flex;
-border: 1px solid black;
-width: 100%;
-height: 100%;
-`
-
-const StyledUserInfoContent = styled.div`
-display: flex;
-`
-
-const StyledProfileImg = styled.img`
-width: 300px;
-height: 100px;
-`
-
-const StyledUserInfo = styled.div`
-width: 200px;
-`
-
-const StyledUserName = styled.strong`
-border: 1px solid black;
-display: block;
-width: 100px;
-`
-
-const StyledUserIntro = styled.strong`
-border: 1px solid black;
-display: block;
-width: 100px;
-`
+const S_Li = styled.li`
+	position: relative;
+`;
+const S_UserInfoContent = styled.a`
+	width: 358px;
+	height: 58px;
+	display: flex;
+	padding: 4px 8px;
+	border-radius: 10px;
+	background: #fefcf3;
+	cursor: pointer;
+`;
+const S_ProfileImg = styled.img`
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	object-fit: cover;
+`;
+const S_UserInfo = styled.div`
+	padding: 15px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 8px;
+`;
+const S_UserName = styled.p`
+	font-weight: 400;
+	font-size: 14px;
+`;
+const S_UserIntro = styled.p`
+	font-size: 12px;
+	color: #767676;
+`;
+const S_ButtonBox = styled.div`
+	position: absolute;
+	right: 8px;
+	top: 15px;
+`;
